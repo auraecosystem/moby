@@ -12,11 +12,20 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./migrations:/docker-entrypoint-initdb.d # Runs migrations automatically on boot
+      - ./migrations:/docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U app_user -d app_database"]
-      interval: 5s
-      timeout: 5s
+      interval: 3s
+      retries: 5
+
+  redis_cache:
+    image: redis:7-alpine
+    container_name: redis_cache
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
       retries: 5
 
   web_server:
@@ -26,8 +35,11 @@ services:
       - "8080:8080"
     environment:
       - DB_CONN_STR=postgres://app_user:secure_db_password@postgres_db:5432/app_database?sslmode=disable
+      - REDIS_URL=redis_cache:6379
     depends_on:
       postgres_db:
+        condition: service_healthy
+      redis_cache:
         condition: service_healthy
 
 volumes:
