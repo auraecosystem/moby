@@ -34,3 +34,30 @@
                  (runc/crun)
                      |
                Linux Kernel
+
+
+
+Aura Moby
+│
+├── api/
+├── engine/
+├── build/
+│   ├── buildkit/
+│   ├── aura-builder/
+│   └── build.sock
+├── runtime/
+├── networking/
+├── storage/
+├── security/
+│   ├── policy/
+│   ├── attestations/
+│   └── sandbox/
+├── plugins/
+├── web4/
+├── paperweb/
+├── qubuhub/
+├── ai/
+│   ├── scheduler/
+│   ├── optimizer/
+│   └── telemetry/
+└── cli/
